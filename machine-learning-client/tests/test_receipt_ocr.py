@@ -27,6 +27,8 @@ class ReceiptOCRTests(unittest.TestCase):
         result = json.loads(output.getvalue())
         self.assertIn("CORNER DELI", result["raw_text"])
         self.assertIn("20.00", result["raw_text"])
+        self.assertEqual(result["merchant"], "CORNER DELI")
+        self.assertEqual(result["subtotal_cents"], 1722)
         self.assertEqual(result["date"], "2026-11-25")
         self.assertEqual(result["total_cents"], 1875)
         self.assertEqual(result["tax_cents"], 153)
