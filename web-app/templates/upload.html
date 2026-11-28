@@ -33,6 +33,60 @@
   </script>
 </head>
 <body>
+  <form id="receipt-review">
+  <h2>Review receipt details</h2>
+
+  <p>
+    <label>
+      Merchant
+      <input name="merchant" type="text" required>
+    </label>
+  </p>
+
+  <p>
+    <label>
+      Receipt date
+      <input name="date" type="date" required>
+    </label>
+  </p>
+
+  <p>
+    <label>
+      Subtotal ($)
+      <input name="subtotal" type="number" step="0.01">
+    </label>
+  </p>
+
+  <p>
+    <label>
+      Tax ($)
+      <input name="tax" type="number" step="0.01">
+    </label>
+  </p>
+
+  <p>
+    <label>
+      Total ($)
+      <input name="total" type="number" step="0.01" required>
+    </label>
+  </p>
+
+  <p>
+    <label>
+      Category
+      <select name="category">
+        <option value="">Choose a category</option>
+        <option value="food">Food</option>
+        <option value="transport">Transport</option>
+        <option value="shopping">Shopping</option>
+        <option value="other">Other</option>
+      </select>
+    </label>
+  </p>
+
+  <button type="submit">Check details</button>
+  <p id="review-message" role="status"></p>
+</form>
   <main>
     <h1>Upload a receipt</h1>
 

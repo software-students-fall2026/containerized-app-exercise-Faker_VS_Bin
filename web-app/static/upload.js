@@ -95,3 +95,59 @@ removeButton.addEventListener("click", () => {
   resetSelection("Receipt removed.");
   fileInput.focus();
 });
+
+const reviewForm = document.querySelector("#receipt-review");
+const reviewMessage = document.querySelector("#review-message");
+
+function centsToInput(cents) {
+  if (cents === null || cents === undefined) {
+    return "";
+  }
+
+  return (cents / 100).toFixed(2);
+}
+
+function clearReviewForm() {
+  reviewForm.reset();
+  reviewMessage.textContent = "";
+}
+
+function fillReviewForm(receipt) {
+  clearReviewForm();
+
+  const fields = reviewForm.elements;
+
+  fields.namedItem("merchant").value = receipt.merchant ?? "";
+  fields.namedItem("date").value = receipt.date ?? "";
+
+  fields.namedItem("subtotal").value =
+    centsToInput(receipt.subtotal_cents);
+
+  fields.namedItem("tax").value =
+    centsToInput(receipt.tax_cents);
+
+  fields.namedItem("total").value =
+    centsToInput(receipt.total_cents);
+
+  fields.namedItem("category").value = receipt.category ?? "";
+}
+
+// A different image needs a fresh review form.
+fileInput.addEventListener("change", clearReviewForm);
+removeButton.addEventListener("click", clearReviewForm);
+
+reviewForm.addEventListener("input", () => {
+  reviewMessage.textContent = "";
+});
+
+reviewForm.addEventListener("submit", (event) => {
+  // Keep the browser on this page.
+  event.preventDefault();
+
+  if (preview.hidden) {
+    reviewMessage.textContent = "Choose a valid receipt image first.";
+    return;
+  }
+
+  reviewMessage.textContent = "Receipt details checked.";
+});
