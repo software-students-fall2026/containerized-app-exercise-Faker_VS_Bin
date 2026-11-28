@@ -4,15 +4,44 @@
 # Receipt Scanner & Expense Tracker
 
 Our project will scan receipts, let users review the extracted information, and
-track spending. The current implementation is a command-line OCR client: it reads
-English-language PNG/JPEG receipts with Tesseract and returns recognized text,
-the purchase date, total, and tax for review. Amounts are integer cents; missing
-or conflicting fields are `null`.
+track spending. The current implementation includes a command-line OCR client
+and a Flask page for selecting receipt images, previewing them, and manually
+editing receipt details. The OCR client reads English-language PNG/JPEG receipts
+with Tesseract and returns recognized text, the purchase date, total, and tax.
+Amounts are integer cents; missing or conflicting fields are `null`.
 
-The Flask dashboard, receipt APIs, MongoDB integration, and three-service Docker
-Compose setup are planned work. The commands below run the existing OCR client
+The expense dashboard, receipt APIs, MongoDB integration, and three-service Docker
+Compose setup are planned work. The Web page and OCR client currently run
 independently; no database, environment variables, or API keys are required yet.
 See the [assignment requirements](./instructions.md).
+
+## Run the Web page with Docker
+
+Install Docker with a running Linux container engine (Docker Desktop on macOS
+or Windows, or Docker Engine on Linux). From the repository root, build and run:
+
+```sh
+docker build -t receipt-web ./web-app
+docker run --rm -p 127.0.0.1:8000:5000 receipt-web
+```
+
+Open [http://localhost:8000/](http://localhost:8000/) in your browser. Python and
+the locked dependencies are installed inside the image. No local Python setup
+is needed. The image includes the Flask app, HTML template, and static JavaScript
+and runs as a non-root user with debug mode disabled.
+
+Choose a PNG or JPEG receipt image up to 5 MB to see its preview. You can edit
+the receipt fields and use **Check details** for local form validation. This
+page does not yet send the image to OCR or save receipt data.
+
+The container uses Flask's development server for this local preview. Port 8000
+on your computer maps to port 5000 inside the container. If port 8000 is in use,
+run `docker run --rm -p 127.0.0.1:8001:5000 receipt-web` and open
+[http://localhost:8001/](http://localhost:8001/).
+
+Press `Ctrl+C` in the terminal to stop the server; `--rm` removes the stopped
+container. After changing the app, template, or JavaScript, rebuild the image
+and start a new container to see the changes.
 
 ## Run OCR with Docker
 
